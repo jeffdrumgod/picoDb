@@ -53,6 +53,18 @@ class Mysql extends Base
             $this->schemaTable = $settings['schema_table'];
         }
 
+        $this->fixSetNamesUtf8();
+    }
+
+    /**
+     * Fix connection with tables using UTF8 and table values contains especial chars, as á, ç, ñ, ã...
+     */
+    protected function fixSetNamesUtf8() {
+        if (strtolower($this->getCharset()) === 'utf8') {
+            $this->pdo->exec('SET NAMES "utf8"');
+        }
+    }
+
     /**
      * Get charset from settings
      */
