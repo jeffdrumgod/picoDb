@@ -52,6 +52,12 @@ class Mysql extends Base
         if (isset($settings['schema_table'])) {
             $this->schemaTable = $settings['schema_table'];
         }
+
+    /**
+     * Get charset from settings
+     */
+    protected function getCharset() {
+        return empty($settings['charset']) ? 'utf8' : $settings['charset'];
     }
 
     /**
@@ -63,8 +69,7 @@ class Mysql extends Base
      */
     protected function buildDsn(array $settings)
     {
-        $charset = empty($settings['charset']) ? 'utf8' : $settings['charset'];
-        $dsn = 'mysql:host='.$settings['hostname'].';dbname='.$settings['database'].';charset='.$charset;
+        $dsn = 'mysql:host='.$settings['hostname'].';dbname='.$settings['database'].';charset='.$this->getCharset();
 
         if (! empty($settings['port'])) {
             $dsn .= ';port='.$settings['port'];
